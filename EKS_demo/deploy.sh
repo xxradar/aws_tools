@@ -1,7 +1,6 @@
 #!/bin/bash
 
-
-# 1. Create a VPC
+# Create a VPC
 VpcID=$(aws ec2 create-vpc --cidr-block 10.0.0.0/16 | jq -r .Vpc.VpcId)
 aws ec2 create-tags --resources $VpcID --tags Key=Name,Value=EKSdemo
 
