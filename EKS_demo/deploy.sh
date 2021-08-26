@@ -114,5 +114,6 @@ aws eks --region eu-west-3 update-kubeconfig --name EKSdemocluster   --kubeconfi
 
 # Check your nodes
 export KUBECONFIG=$PWD/eksdemokubeconfig.yaml
-echo -e "\n This can take up to a few minutes ..."
+echo -e "\n This can take up to a few minutes ... ctrl-C to exit"
 watch kubectl get no
+echo "run 'export KUBECONFIG=$PWD/eksdemokubeconfig.yaml' to connect to your cluster with kubectl"
