@@ -94,7 +94,7 @@ aws eks create-cluster \
 
 echo "Creating EKS cluster. This can take up to 15min"
 
-while [ $(aws eks describe-cluster  --name test --region eu-west-3 | jq -r .cluster.status) != "ACTIVE" ]
+while [ $(aws eks describe-cluster  --name EKSdemocluster --region eu-west-3 | jq -r .cluster.status) != "ACTIVE" ]
 do
    sleep 15; echo -n ".";
 done
