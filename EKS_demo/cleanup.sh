@@ -1,5 +1,7 @@
 #!/bin/bash
 aws eks delete-nodegroup --cluster-name EKSdemocluster --nodegroup-name EKSdemocluster-ng
+echo "Waiting for 5min to delete NodeGroup"
+sleep 300
 aws eks delete-cluster --name EKSdemocluster
 
 
@@ -10,3 +12,5 @@ aws iam detach-role-policy --policy-arn  arn:aws:iam::aws:policy/AmazonEKSWorker
 aws iam detach-role-policy --policy-arn  arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly --role-name EKSdemoNodeRole
 aws iam detach-role-policy --policy-arn  arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy --role-name EKSdemoNodeRole
 aws iam delete-role --role-name EKSdemoNodeRole
+
+
