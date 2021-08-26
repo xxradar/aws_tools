@@ -1,4 +1,5 @@
 #!/bin/bash
+export AWS_REGION="eu-west-3"
 aws eks delete-nodegroup --cluster-name EKSdemocluster --nodegroup-name EKSdemocluster-ng
 echo "Waiting for 5min to delete NodeGroup"
 sleep 300
