@@ -52,7 +52,6 @@ EOF
 
 aws iam create-role --role-name EKSdemoClusterRole  --assume-role-policy-document file://EKS_role_policy_doc.json --output text
 aws iam attach-role-policy --policy-arn arn:aws:iam::aws:policy/AmazonEKSClusterPolicy --role-name EKSdemoClusterRole  --output text 
-EKSdemoCluserRoleArn=$(aws iam get-role --role-name EKSdemoClusterRole | jq -r .Role.Arn)
 
 
 # Make sure there is a EKS Node Role
@@ -71,14 +70,10 @@ cat  <<EOF >EKS_node_role_policy_doc.json
 }
 EOF
 
-
-aws iam create-role --role-name EKSdemoNodeRole  --assume-role-policy-document file://EKS_node_role_policy_doc.json --output text 
-aws iam attach-role-policy --policy-arn arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy --role-name EKSdemoNodeRole --output text 
-aws iam attach-role-policy --policy-arn arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly --role-name EKSdemoNodeRole --output text 
+aws iam create-role --role-name EKSdemoNodeRole  --assume-role-policy-document file://EKS_node_role_policy_doc.json --output text
+aws iam attach-role-policy --policy-arn arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy --role-name EKSdemoNodeRole --output text
+aws iam attach-role-policy --policy-arn arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly --role-name EKSdemoNodeRole --output text
 aws iam attach-role-policy --policy-arn arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy --role-name EKSdemoNodeRole --output text
-sleep 10
-aws iam get-role --role-name EKSdemoNodeRole  --output text 
-EKSdemoNodeRoleArn=$(aws iam get-role --role-name EKSdemoNodeRole | jq -r .Role.Arn)
 
 
 
@@ -88,6 +83,7 @@ aws ec2 authorize-security-group-ingress --group-id $SGgroupID --protocol all --
 
 
 # Create your Cluster
+EKSdemoCluserRoleArn=$(aws iam get-role --role-name EKSdemoClusterRole | jq -r .Role.Arn)
 aws eks create-cluster \
    --region $AWS_REGION \
    --name EKSdemocluster \
@@ -105,7 +101,9 @@ done
 echo -e "\n Completed"
 
 
+
 # Create a Nodegroup
+EKSdemoNodeRoleArn=$(aws iam get-role --role-name EKSdemoNodeRole | jq -r .Role.Arn)
 aws eks create-nodegroup  \
 --cluster-name EKSdemocluster \
 --nodegroup-name EKSdemocluster-ng \
