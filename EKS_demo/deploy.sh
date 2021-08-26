@@ -103,8 +103,8 @@ echo -e "Completed"
 
 # Create a Nodegroup
 aws eks create-nodegroup  \
---cluster-name test  \
---nodegroup-name EKSdemo-ng \
+--cluster-name EKSdemocluster \
+--nodegroup-name EKSdemocluster-ng \
 --subnets $SubnetID \
 --node-role $EKSdemoNodeRoleArn \
 --output text 
