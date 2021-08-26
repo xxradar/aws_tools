@@ -110,7 +110,7 @@ aws eks create-nodegroup  \
 --output text 
 
 # Export kubeconfig 
-aws eks --region eu-west-3 update-kubeconfig --name test   --kubeconfig eksdemokubeconfig.yaml
+aws eks --region eu-west-3 update-kubeconfig --name EKSdemocluster   --kubeconfig eksdemokubeconfig.yaml
 
 # Check your nodes
 export KUBECONFIG=$PWD/eksdemokubeconfig.yaml
