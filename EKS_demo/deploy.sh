@@ -75,7 +75,8 @@ EOF
 aws iam create-role --role-name EKSdemoNodeRole  --assume-role-policy-document file://EKS_node_role_policy_doc.json --output text 
 aws iam attach-role-policy --policy-arn arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy --role-name EKSdemoNodeRole --output text 
 aws iam attach-role-policy --policy-arn arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly --role-name EKSdemoNodeRole --output text 
-aws iam attach-role-policy --policy-arn arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy --role-name EKSdemoNodeRole --output text 
+aws iam attach-role-policy --policy-arn arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy --role-name EKSdemoNodeRole --output text
+sleep 10
 aws iam get-role --role-name EKSdemoNodeRole  --output text 
 EKSdemoNodeRoleArn=$(aws iam get-role --role-name EKSdemoNodeRole | jq -r .Role.Arn)
 
