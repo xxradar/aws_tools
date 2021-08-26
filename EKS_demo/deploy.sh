@@ -1,4 +1,7 @@
 #!/bin/bash
+export AWS_REGION="eu-west-3"
+export REGION_AZ1="eu-west-3a"
+export REGION_AZ2="eu-west-3b"
 
 # Create a VPC
 VpcID=$(aws ec2 create-vpc --cidr-block 10.0.0.0/16 | jq -r .Vpc.VpcId)
@@ -8,8 +11,8 @@ aws ec2 create-tags --resources $VpcID --tags Key=Name,Value=EKSdemo
 # Create 2 (or more) subnets 
 #    - public auto-assign
 #    - makes ure there is routing / igw 
-aws ec2 create-subnet --vpc-id $VpcID --cidr-block 10.0.1.0/24 --availability-zone eu-west-3a --output text
-aws ec2 create-subnet --vpc-id $VpcID --cidr-block 10.0.2.0/24 --availability-zone eu-west-3b --output text
+aws ec2 create-subnet --vpc-id $VpcID --cidr-block 10.0.1.0/24 --availability-zone $REGION_AZ1 --output text
+aws ec2 create-subnet --vpc-id $VpcID --cidr-block 10.0.2.0/24 --availability-zone REGION_AZ2 --output text
 
 # Create Internet Gateway
 IgwID=$(aws ec2 create-internet-gateway | jq -r .InternetGateway.InternetGatewayId)
@@ -85,7 +88,7 @@ aws ec2 authorize-security-group-ingress --group-id $SGgroupID --protocol all --
 
 # Create your Cluster
 aws eks create-cluster \
-   --region eu-west-3 \
+   --region $AWS_REGION \
    --name EKSdemocluster \
    --kubernetes-version 1.21 \
    --role-arn $EKSdemoCluserRoleArn \
@@ -110,7 +113,7 @@ aws eks create-nodegroup  \
 --output text 
 
 # Export kubeconfig 
-aws eks --region eu-west-3 update-kubeconfig --name EKSdemocluster   --kubeconfig eksdemokubeconfig.yaml
+aws eks --region $AWS_REGION update-kubeconfig --name EKSdemocluster   --kubeconfig eksdemokubeconfig.yaml
 
 # Check your nodes
 export KUBECONFIG=$PWD/eksdemokubeconfig.yaml
