@@ -12,7 +12,7 @@ aws ec2 create-tags --resources $VpcID --tags Key=Name,Value=EKSdemo
 #    - public auto-assign
 #    - makes ure there is routing / igw 
 aws ec2 create-subnet --vpc-id $VpcID --cidr-block 10.0.1.0/24 --availability-zone $REGION_AZ1 --output text
-aws ec2 create-subnet --vpc-id $VpcID --cidr-block 10.0.2.0/24 --availability-zone REGION_AZ2 --output text
+aws ec2 create-subnet --vpc-id $VpcID --cidr-block 10.0.2.0/24 --availability-zone $REGION_AZ2 --output text
 
 # Create Internet Gateway
 IgwID=$(aws ec2 create-internet-gateway | jq -r .InternetGateway.InternetGatewayId)
