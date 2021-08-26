@@ -31,5 +31,87 @@ do
 done
 
 
+# Make sure there is a EKS Cluster Role
+cat  <<EOF >EKS_role_policy_doc.json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "eks.amazonaws.com"
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+EOF
+
+aws iam create-role --role-name EKSdemoClusterRole  --assume-role-policy-document file://EKS_role_policy_doc.json --output text
+aws iam attach-role-policy --policy-arn arn:aws:iam::aws:policy/AmazonEKSClusterPolicy --role-name EKSdemoClusterRole  --output text 
+EKSdemoCluserRoleArn=$(aws iam get-role --role-name EKSdemoClusterRole | jq -r .Role.Arn)
 
 
+# Make sure there is a EKS Node Role
+cat  <<EOF >EKS_node_role_policy_doc.json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "ec2.amazonaws.com"
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+EOF
+
+
+aws iam create-role --role-name EKSdemoNodeRole  --assume-role-policy-document file://EKS_node_role_policy_doc.json --output text 
+aws iam attach-role-policy --policy-arn arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy --role-name EKSdemoNodeRole --output text 
+aws iam attach-role-policy --policy-arn arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly --role-name EKSdemoNodeRole --output text 
+aws iam attach-role-policy --policy-arn arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy --role-name EKSdemoNodeRole --output text 
+aws iam get-role --role-name EKSdemoNodeRole  --output text 
+EKSdemoNodeRoleArn=$(aws iam get-role --role-name EKSdemoNodeRole | jq -r .Role.Arn)
+
+
+
+# Create your security-group
+SGgroupID=$(aws ec2 create-security-group --group-name MySecurityGroup --description "My security group" --vpc-id $VpcID | jq -r .GroupId)
+aws ec2 authorize-security-group-ingress --group-id $SGgroupID --protocol all --cidr 0.0.0.0/0 --output text
+
+
+# Create your Cluster
+aws eks create-cluster \
+   --region eu-west-3 \
+   --name EKSdemocluster \
+   --kubernetes-version 1.21 \
+   --role-arn $EKSdemoCluserRoleArn \
+   --resources-vpc-config subnetIds=$(echo $SubnetID | sed -e 's/ /,/g'),securityGroupIds=$SGgroupID \
+   --output text
+
+echo "Creating EKS cluster. This can take up to 15min"
+
+while [ $(aws eks describe-cluster  --name test --region eu-west-3 | jq -r .cluster.status) != "ACTIVE" ]
+do
+   sleep 15; echo -n ".";
+done
+echo -e "Completed"
+
+
+# Create a Nodegroup
+aws eks create-nodegroup  \
+--cluster-name test  \
+--nodegroup-name EKSdemo-ng \
+--subnets $SubnetID \
+--node-role $EKSdemoNodeRoleArn \
+--output text 
+
+# Export kubeconfig 
+aws eks --region eu-west-3 update-kubeconfig --name test   --kubeconfig eksdemokubeconfig.yaml
+
+# Check your nodes
+export KUBECONFIG=$PWD/eksdemokubeconfig.yaml
+watch kubectl get no
