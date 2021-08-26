@@ -98,7 +98,7 @@ while [ $(aws eks describe-cluster  --name EKSdemocluster --region eu-west-3 | j
 do
    sleep 15; echo -n ".";
 done
-echo -e "Completed"
+echo -e "\n Completed"
 
 
 # Create a Nodegroup
@@ -114,4 +114,5 @@ aws eks --region eu-west-3 update-kubeconfig --name EKSdemocluster   --kubeconfi
 
 # Check your nodes
 export KUBECONFIG=$PWD/eksdemokubeconfig.yaml
+echo -e "\n This can take up to a few minutes ..."
 watch kubectl get no
