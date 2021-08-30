@@ -94,7 +94,7 @@ aws eks create-cluster \
 
 echo "Creating EKS cluster. This can take up to 15min"
 
-while [ $(aws eks describe-cluster  --name EKSdemocluster --region eu-west-3 | jq -r .cluster.status) != "ACTIVE" ]
+while [ $(aws eks describe-cluster  --name EKSdemocluster --region $AWS_REGION| jq -r .cluster.status) != "ACTIVE" ]
 do
    sleep 15; echo -n ".";
 done
@@ -110,6 +110,14 @@ aws eks create-nodegroup  \
 --subnets $SubnetID \
 --node-role $EKSdemoNodeRoleArn \
 --output text 
+
+echo "Creating Nodegroup. This can take up to 5min"
+while [ $(aws eks describe-nodegroup  --nodegroup-name EKSdemocluster-ng --cluster-name EKSdemocluster --region $AWS_REGION | jq -r .nodegroup.status) != "ACTIVE" ]
+do
+   sleep 15; echo -n ".";
+done
+echo -e "\n Completed"
+
 
 # Export kubeconfig 
 aws eks --region $AWS_REGION update-kubeconfig --name EKSdemocluster   --kubeconfig eksdemokubeconfig.yaml
