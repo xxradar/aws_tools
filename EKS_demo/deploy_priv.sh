@@ -122,8 +122,12 @@ echo -e "\n Completed"
 # Export kubeconfig 
 aws eks --region $AWS_REGION update-kubeconfig --name EKSdemocluster   --kubeconfig eksdemokubeconfig.yaml
 
+
 # Check your nodes
 export KUBECONFIG=$PWD/eksdemokubeconfig.yaml
 echo -e "\n This can take up to a few minutes ... ctrl-C to exit"
 watch kubectl get no
 echo "run 'export KUBECONFIG=$PWD/eksdemokubeconfig.yaml' to connect to your cluster with kubectl"
+
+kubectl set env daemonset -n kube-system aws-node AWS_VPC_K8S_CNI_EXTERNALSNAT=true
+
