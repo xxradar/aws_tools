@@ -14,18 +14,12 @@ aws ec2 create-tags --resources $VpcID --tags Key=Name,Value=EKSdemo
 aws ec2 create-subnet --vpc-id $VpcID --cidr-block 10.0.1.0/24 --availability-zone $REGION_AZ1 --output text
 aws ec2 create-subnet --vpc-id $VpcID --cidr-block 10.0.2.0/24 --availability-zone $REGION_AZ2 --output text
 
-# Create Internet Gateway
-#IgwID=$(aws ec2 create-internet-gateway | jq -r .InternetGateway.InternetGatewayId)
-#aws ec2 attach-internet-gateway --vpc-id $VpcID --internet-gateway-id $IgwID --output text
-
-
-aws ec2 create-nat-gateway --subnet-id subnet-1a2b3c4d --allocation-id eipalloc-0bef8af2be1bc8cc2
-
-
+# Create Nat Gateway
+NatGwID=$(aws ec2 create-nat-gateway --subnet-id subnet-0ff98ddade415a75c --allocation-id eipalloc-0bef8af2be1bc8cc2  | jq -r .NatGateway.NatGatewayId)
 
 # Get default routing table
 RtbID=$(aws ec2 create-route-table --vpc-id $VpcID | jq -r .RouteTable.RouteTableId)
-aws ec2 create-route --route-table-id $RtbID --destination-cidr-block 0.0.0.0/0 --gateway-id $IgwID --output text
+aws ec2 create-route --route-table-id $RtbID --destination-cidr-block 0.0.0.0/0 --gateway-id $NatGwID --output text
 aws ec2 describe-route-tables --route-table-id $RtbID --output text
 
 # List all subnetID
@@ -35,7 +29,7 @@ SubnetID=$(aws ec2 describe-subnets --filters "Name=vpc-id,Values="$VpcID --quer
 for value in $SubnetID
 do
 	aws ec2 associate-route-table  --subnet-id $value --route-table-id $RtbID --output text
-	aws ec2 modify-subnet-attribute --subnet-id $value  --map-public-ip-on-launch --output text
+	aws ec2 modify-subnet-attribute --subnet-id $value  --no-map-public-ip-on-launch --output text
 done
 
 
