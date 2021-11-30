@@ -15,6 +15,7 @@ aws ec2 create-subnet --vpc-id $VpcID --cidr-block 10.0.1.0/24 --availability-zo
 aws ec2 create-subnet --vpc-id $VpcID --cidr-block 10.0.2.0/24 --availability-zone $REGION_AZ2 --output text
 
 # Create Nat Gateway
+## fix eip allocation ...
 NatGwID=$(aws ec2 create-nat-gateway --subnet-id subnet-0ff98ddade415a75c --allocation-id eipalloc-0bef8af2be1bc8cc2  | jq -r .NatGateway.NatGatewayId)
 
 # Get default routing table
