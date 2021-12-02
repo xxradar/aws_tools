@@ -19,5 +19,9 @@ gpg --list-secret-key --keyid-format LONG
 
 #Export the the public key
 gpg --export xxxx >labuserkey.pub
+```
 
+### Generate the users
+```
+./getpass.sh labstudent 25 
 ```
