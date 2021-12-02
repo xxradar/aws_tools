@@ -23,5 +23,5 @@ gpg --export xxxx >labuserkey.pub
 
 ### Generate the users
 ```
-./getpass.sh 25 student studentlab.net 
+./getpass.sh 25 <name_prefix> <domain>
 ```
