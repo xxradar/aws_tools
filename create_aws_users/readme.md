@@ -20,4 +20,4 @@ gpg --list-secret-key --keyid-format LONG
 #Export the the public key
 gpg --export xxxx >labuserkey.pub
 
-````
+```
