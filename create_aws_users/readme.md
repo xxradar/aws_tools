@@ -1,6 +1,6 @@
 ## Setting up
 
-### Create a terraform.tfvars
+### Create a <terraform.tfvars>
 ```
 access_key = "xxxxxxx"
 secret_key = "xxxxxxx"
