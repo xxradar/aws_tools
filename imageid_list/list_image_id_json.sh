@@ -1,9 +1,9 @@
 #!/bin/bash
 # Cleanup
-rm  $1_PAYG_json.txt >/dev/null
-rm  $1_BYOL_json.txt >/dev/null
-rm  $1_PAYG_yaml.txt >/dev/null
-rm  $1_BYOL_yaml.txt >/dev/null
+rm  $1_PAYG_json.txt 
+rm  $1_BYOL_json.txt 
+rm  $1_PAYG_yaml.txt 
+rm  $1_BYOL_yaml.txt 
 
 # Prep file
 echo  "Mappings:" >$1_PAYG_yaml.txt
