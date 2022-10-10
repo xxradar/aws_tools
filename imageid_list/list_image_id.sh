@@ -1,4 +1,13 @@
 #!/bin/bash
+
+if [[ -n "$1" ]];
+then
+echo "Version: "$1
+else
+echo "Set version as ex. ./list_image_id.sh 7.2.2";exit;
+fi
+
+
 # Cleanup
 rm  $1_PAYG_json.txt 
 rm  $1_BYOL_json.txt 
