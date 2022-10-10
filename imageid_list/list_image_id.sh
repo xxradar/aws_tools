@@ -30,9 +30,6 @@ do
     REGION=$value; echo -e '\t\t\t'"\""$REGION"\":{\"fgtami\": \""$(aws ec2 describe-images --filters $LOOKUP --region $value| jq -r .Images[].ImageId)"\"}," >>$1_PAYG_json.txt
     echo -e "    "$REGION":" >>$1_PAYG_yaml.txt >>$1_PAYG_yaml.txt
     echo -e "       fgtami: "$(aws ec2 describe-images --filters $LOOKUP --region $value| jq -r .Images[].ImageId) >>$1_PAYG_yaml.txt
-
-
-
 done
 
 
