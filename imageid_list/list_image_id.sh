@@ -52,5 +52,5 @@ done
 # Cleanup file
 truncate  -s -2 $1_PAYG_json.txt
 echo -e "\n" >>$1_PAYG_json.txt
-truncate  -s -2 $1_BOYL_json.txt
+truncate  -s -2 $1_BYOL_json.txt
 echo -e "\n" >>$1_BYOL_json.txt
