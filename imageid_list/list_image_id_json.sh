@@ -26,8 +26,6 @@ do
 
 done
 
-truncate  -s -2 $1_PAYG_json.txt
-echo -e "\r\n" >>$1_PAYG_json.txt
 
 echo "-------------- Listing all imageid for all regions BYOL -------------"
 #export REGIONSLIST=$(aws ec2 describe-regions | jq -r .Regions[].RegionName)
@@ -40,8 +38,10 @@ do
     echo -e "       fgtami: "$(aws ec2 describe-images --filters $LOOKUP --region $value| jq -r .Images[].ImageId) >>$1_BYOL_yaml.txt
 done
 
+
+
+# Cleanup file
+truncate  -s -2 $1_PAYG_json.txt
+echo -e "\n" >>$1_PAYG_json.txt
 truncate  -s -2 $1_BOYL_json.txt
-echo -e "\r\n" >>$1_BYOL_json.txt
-
-
-
+echo -e "\n" >>$1_BYOL_json.txt
