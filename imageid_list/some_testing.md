@@ -10,6 +10,9 @@ aws ec2 describe-images --filters $LOOKUP | jq -r --arg region "$(echo -n $regio
 cat tst.lst | sed 's/ /, /g' | sed 's/[()]//g' >final.lst
 ```
 ```
+sort -t ',' -k 3 -k 5 final.lst
+```
+```
 #!/bin/bash
 # Read each line from the file
 while IFS=,  read -r region ami_id type build version ga; do
