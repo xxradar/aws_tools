@@ -16,3 +16,13 @@ while IFS=,  read -r region ami_id type build version ga; do
 	echo $region $ami_id $type $build $version $ga
 done < final.lst
 ```
+```
+#!/bin/bash
+echo '| Region  | AmiID  | Type  | Build  | Version  | Status |'
+echo '|---------|--------|--------|-------|----------| -------|'
+
+# Read each line from the file
+while IFS=,  read -r region ami_id type build version ga; do
+	echo '| '$region' | '$ami_id' | '$type' | '$build' | '$version' | '$ga' |'
+done < final.lst
+```
