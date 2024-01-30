@@ -1,5 +1,5 @@
 | Region  | AmiID  | Type  | Build  | Version  | Status |
-|---------|--------|--------|--------|--------|-------|
+|---------|--------|--------|-------|----------| -------|
 | eu-west-3 | ami-0e7f581cd4727201f | FortiGate-VM64-AWSONDEMAND | build2093 | (6.4.14) | GA |
 | eu-west-3 | ami-03a7f6b81687e5b51 | FortiGate-VM64-AWS | build0566 | (7.0.13) | GA |
 | eu-west-3 | ami-03e37a401a4386b47 | FortiGate-VM64-AWS | build2092 | (6.4.13) | GA |
