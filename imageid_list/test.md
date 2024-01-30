@@ -1,5 +1,9 @@
-| eu-west-3|  ami-02715c909653321f8 FortiGate-VM64-AWS build2093 6.4.14 GA |
-| eu-west-3|  ami-07def77fbd5499c11 FortiGate-VMARM64-AWSONDEMAND build2463 7.4.1 GA | 
+| eu-west-3 |  ami-02715c909653321f8 FortiGate-VM64-AWS build2093 6.4.14 GA |
+| eu-west-3 |  ami-07def77fbd5499c11 FortiGate-VMARM64-AWSONDEMAND build2463 7.4.1 GA |
+
+
+
+
 | eu-west-3|  ami-0f710101fec4e5a58 FortiGate-VMARM64-AWS build2463 7.4.1 GA
 | eu-west-3|  ami-07dc962d73c169e1f FortiGate-VMARM64-AWS build2571 7.4.2 GA
 | eu-west-3|  ami-02bcdd52c6bac97cb FortiGate-VM64-AWSONDEMAND build0523 7.0.12 GA
